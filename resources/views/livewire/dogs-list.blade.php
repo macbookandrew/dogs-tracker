@@ -20,6 +20,7 @@
                         <td class="py-2 px-4">{{ $dog->name }}</td>
                         <td class="py-2 px-4">{{ $dog->birth_year ?? '—' }}</td>
                         <td class="py-2 pl-4">
+                            <x-button class="bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 dark:active:bg-red-500" wire:click="deleteDog({{ $dog->id }})" wire:confirm="{{ __('Are you sure you want to delete this dog?') }}">{{ __('Delete') }}</x-button>
                         </td>
                     </tr>
                 @empty

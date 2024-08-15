@@ -64,4 +64,14 @@ class DogsList extends Component
 
         $this->mount();
     }
+
+    public function deleteDog(Dog $dog)
+    {
+        $this->authorize('delete', $dog);
+
+        $dog->delete();
+
+        $this->user->refresh();
+        $this->mount();
+    }
 }
