@@ -2,20 +2,19 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Traits\HasBreeds;
+use App\Livewire\Traits\HasUser;
 use App\Models\Breed;
 use App\Models\Dog;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
-/**
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Breed> $breeds
- */
 class DogsList extends Component
 {
+    use HasBreeds;
+    use HasUser;
+
     /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Dog> */
     public Collection $dogs;
 
@@ -25,6 +24,7 @@ class DogsList extends Component
 
     public ?int $newDogBirthYear = null;
 
+    #[On(['saved', 'deleted'])]
     public function mount()
     {
         $this->dogs = $this->user->dogs->load('breed');
@@ -33,18 +33,6 @@ class DogsList extends Component
     public function render()
     {
         return view('livewire.dogs-list');
-    }
-
-    #[Computed()]
-    public function user(): ?User
-    {
-        return Auth::user();
-    }
-
-    #[Computed()]
-    public function breeds(): Collection
-    {
-        return Breed::all();
     }
 
     public function createDog()
@@ -62,16 +50,7 @@ class DogsList extends Component
         ]);
         $this->user->dogs()->save($dog);
 
-        $this->mount();
-    }
-
-    public function deleteDog(Dog $dog)
-    {
-        $this->authorize('delete', $dog);
-
-        $dog->delete();
-
-        $this->user->refresh();
-        $this->mount();
+        $this->reset(['newDogBreedId', 'newDogName', 'newDogBirthYear']);
+        $this->dispatch('saved');
     }
 }
