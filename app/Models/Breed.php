@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -20,9 +21,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Breed whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Breed whereUpdatedAt($value)
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Dog> $dogs
+ * @property-read int|null $dogs_count
+ *
  * @mixin \Eloquent
  */
 class Breed extends Model
 {
     use HasFactory;
+
+    public function dogs(): HasMany
+    {
+        return $this->hasMany(Dog::class);
+    }
 }
