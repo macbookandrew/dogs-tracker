@@ -35,6 +35,13 @@ class Dog extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'breed_id',
+        'user_id',
+        'name',
+        'birth_year',
+    ];
+
     public function breed(): BelongsTo
     {
         return $this->belongsTo(Breed::class);
