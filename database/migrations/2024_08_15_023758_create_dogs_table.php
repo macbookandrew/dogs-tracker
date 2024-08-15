@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('dogs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Breed::class)->constrained()->nullOnDelete();
-            $table->foreignId(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Breed::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('birth_year')->nullable();
             $table->timestamps();
